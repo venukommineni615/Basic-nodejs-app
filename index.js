@@ -1,15 +1,14 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+const adminRoutes=require('./routes/admin')
+const shopRoutes=require('./routes/shop')
 app.use(bodyParser.urlencoded({ extended:false }))
-app.get('/add-product',(req, res, next)=>{
-   res.send('<html><body><form method="post" action="/product"><input type="text" name="title"/><input type="number" name="size"/> <button type="submit">submit</button></form></body></html>')
-})
-app.post('/product',(req, res, next)=>{
-    const body = req.body
-    console.log(body.title)
-    console.log(body.size)
-    res.redirect('/add-product')
+app.use('/admin', adminRoutes)
+app.use('/shop',shopRoutes)
+app.use((req,res)=>{
+    res.status(404)
+    res.send('404 Not Found')
 })
 
 app.listen(4000)
